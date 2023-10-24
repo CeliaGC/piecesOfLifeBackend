@@ -1,6 +1,9 @@
-﻿using Data;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using Data;
 using Entities.Entities;
 using Logic.ILogic;
+
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -45,7 +48,7 @@ namespace Logic.Logic
         }
 
         public List<ImageItem> GetImageById(int id)
-     
+
         {
             var nameFilter = new ImageItem();
             nameFilter.Id = id;
@@ -57,7 +60,7 @@ namespace Logic.Logic
             {
                 resultList = resultList.Where(i => i.Id == id);
             }
-            
+
             return resultList.ToList();
 
         }
@@ -70,7 +73,7 @@ namespace Logic.Logic
         }
 
         public void UpdateImage(ImageItem imageItem)
-            
+
         {
 
 
@@ -78,7 +81,9 @@ namespace Logic.Logic
             _serviceContext.SaveChanges();
         }
 
-       
+
+
+
     }
 }
 
