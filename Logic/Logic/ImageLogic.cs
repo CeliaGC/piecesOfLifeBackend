@@ -67,6 +67,10 @@ namespace Logic.Logic
         int IImageLogic.InsertImagetItem(ImageItem imageItem)
         {
 
+
+
+
+
             _serviceContext.Images.Add(imageItem);
             _serviceContext.SaveChanges();
             return imageItem.Id;

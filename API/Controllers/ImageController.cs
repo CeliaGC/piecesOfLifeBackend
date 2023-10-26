@@ -24,10 +24,10 @@ namespace Apii.Controllers
         }
 
         [HttpPost(Name = "InsertImage")]
-        public int Post([FromBody] ImageItem imageItem)
+        public IActionResult Post([FromBody] ImageItem imageItem)
         {
            
-                return _imageService.InsertImage(imageItem);
+                return Ok(_imageService.InsertImage(imageItem));
         }
 
         [HttpDelete(Name = "DeleteImage")]
@@ -39,11 +39,11 @@ namespace Apii.Controllers
         }
 
         [HttpPatch(Name = "ModifyImage")]
-        public void Patch([FromBody] ImageItem imageItem, [FromQuery] int id)
+        public IActionResult Patch([FromBody] ImageItem imageItem, [FromQuery] int id)
 
         {
                 _imageService.UpdateImage(imageItem);
-    
+                return Ok();
         }
 
         [HttpGet(Name = "GetImagesByCriteria")]
