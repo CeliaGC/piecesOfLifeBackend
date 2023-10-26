@@ -66,7 +66,12 @@ namespace Logic.Logic
         }
         int IImageLogic.InsertImagetItem(ImageItem imageItem)
         {
+            //Account myAccount = new Account(
+            //   "dvx5np4ma",
+            //   "428565913724167",
+            //   "5Ltt3Yvb7Eon3v8_t21N_uw7FH8");
 
+            //Cloudinary cloudinary = new Cloudinary(myAccount);
             _serviceContext.Images.Add(imageItem);
             _serviceContext.SaveChanges();
             return imageItem.Id;
