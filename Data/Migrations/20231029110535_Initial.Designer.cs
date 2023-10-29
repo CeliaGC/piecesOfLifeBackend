@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ServiceContext))]
-    [Migration("20230318200416_Tryingpatch")]
-    partial class Tryingpatch
+    [Migration("20231029110535_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,29 @@ namespace Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Entities.ImageItem", b =>
+            modelBuilder.Entity("Entities.Entities.CategoryItem", b =>
+                {
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("IdCategory")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
+
+                    b.HasKey("CategoryName");
+
+                    b.ToTable("Categories", (string)null);
+                });
+
+            modelBuilder.Entity("Entities.Entities.ImageItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -35,7 +57,7 @@ namespace Data.Migrations
 
                     b.Property<string>("Category")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("IdWeb")
                         .HasColumnType("uniqueidentifier");
@@ -45,6 +67,7 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageSource")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("InsertDate")
@@ -53,9 +76,30 @@ namespace Data.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("Category");
+
                     b.ToTable("Images", (string)null);
+                });
+
+            modelBuilder.Entity("Entities.Entities.ImageItem", b =>
+                {
+                    b.HasOne("Entities.Entities.CategoryItem", "CategoryItem")
+                        .WithMany("Images")
+                        .HasForeignKey("Category")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CategoryItem");
+                });
+
+            modelBuilder.Entity("Entities.Entities.CategoryItem", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

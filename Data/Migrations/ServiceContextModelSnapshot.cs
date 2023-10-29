@@ -22,7 +22,29 @@ namespace Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Entities.ImageItem", b =>
+            modelBuilder.Entity("Entities.Entities.CategoryItem", b =>
+                {
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("IdCategory")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
+
+                    b.HasKey("CategoryName");
+
+                    b.ToTable("Categories", (string)null);
+                });
+
+            modelBuilder.Entity("Entities.Entities.ImageItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,15 +53,18 @@ namespace Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Category")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("IdWeb")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageSource")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("InsertDate")
@@ -53,7 +78,25 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Category");
+
                     b.ToTable("Images", (string)null);
+                });
+
+            modelBuilder.Entity("Entities.Entities.ImageItem", b =>
+                {
+                    b.HasOne("Entities.Entities.CategoryItem", "CategoryItem")
+                        .WithMany("Images")
+                        .HasForeignKey("Category")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CategoryItem");
+                });
+
+            modelBuilder.Entity("Entities.Entities.CategoryItem", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

@@ -22,7 +22,16 @@ namespace Data
                 entity.ToTable("Images");
             });
 
-        }
+            builder.Entity<CategoryItem>(entity => {
+                entity.ToTable("Categories");
+                entity.HasKey(c => c.CategoryName);
+                entity.HasMany(c => c.Images)
+                .WithOne(c => c.CategoryItem)
+                .HasForeignKey(c => c.Category)
+                .IsRequired();
+                    });
+
+                }
     }
     public class ServiceContextFactory : IDesignTimeDbContextFactory<ServiceContext>
     {
