@@ -39,7 +39,7 @@ namespace Apii.Controllers
         }
 
         [HttpPatch(Name = "ModifyImage")]
-        public IActionResult Patch([FromBody] ImageItem imageItem, [FromQuery] int id)
+        public IActionResult Patch([FromBody] ImageItem imageItem)
 
         {
                 _imageService.UpdateImage(imageItem);

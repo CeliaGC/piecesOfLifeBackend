@@ -39,7 +39,7 @@ namespace Apii.Controllers
         }
 
         [HttpPatch(Name = "ModifyCategory")]
-        public IActionResult Patch([FromBody] CategoryItem categoryItem, [FromQuery] int id)
+        public IActionResult Patch([FromBody] CategoryItem categoryItem)
 
         {
             _categoryService.UpdateCategory(categoryItem);

@@ -67,10 +67,9 @@ namespace Logic.Logic
         int IImageLogic.InsertImagetItem(ImageItem imageItem)
         {
 
-
-
-
-
+            var categoryInDataBase = _serviceContext.Set<CategoryItem>().Where(c => c.CategoryName == imageItem.Category);
+            //var imageToAdd = new ImageItem();
+            //imageItem.CategoryItemId = categoryInDataBase.
             _serviceContext.Images.Add(imageItem);
             _serviceContext.SaveChanges();
             return imageItem.Id;
