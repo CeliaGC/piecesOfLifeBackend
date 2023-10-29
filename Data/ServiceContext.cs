@@ -15,7 +15,8 @@ namespace Data
     {
         public ServiceContext(DbContextOptions<ServiceContext> options) : base(options) { }
         public DbSet<ImageItem> Images { get; set; }
-      
+        public DbSet<CategoryItem> Categories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<ImageItem>(entity => {
@@ -24,12 +25,12 @@ namespace Data
 
             builder.Entity<CategoryItem>(entity => {
                 entity.ToTable("Categories");
-                entity.HasKey(c => c.CategoryName);
+                entity.HasKey(c => c.IdCategory);
                 entity.HasMany(c => c.Images)
-                .WithOne(c => c.CategoryItem)
-                .HasForeignKey(c => c.Category)
-                .IsRequired();
-                    });
+                      .WithOne(c => c.CategoryItem)
+                      .HasForeignKey(c => c.CategoryItemId);
+
+            });
 
                 }
     }

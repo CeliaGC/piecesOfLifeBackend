@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ServiceContext))]
-    [Migration("20231029110535_Initial")]
-    partial class Initial
+    [Migration("20231029124426_Fix-foreignKey-categories")]
+    partial class FixforeignKeycategories
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,15 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Entities.Entities.CategoryItem", b =>
                 {
-                    b.Property<string>("CategoryName")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("IdCategory")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCategory"));
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("InsertDate")
                         .HasColumnType("datetime2");
@@ -42,7 +46,7 @@ namespace Data.Migrations
                     b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
 
-                    b.HasKey("CategoryName");
+                    b.HasKey("IdCategory");
 
                     b.ToTable("Categories", (string)null);
                 });
@@ -57,7 +61,10 @@ namespace Data.Migrations
 
                     b.Property<string>("Category")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CategoryItemId")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("IdWeb")
                         .HasColumnType("uniqueidentifier");
@@ -81,7 +88,7 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Category");
+                    b.HasIndex("CategoryItemId");
 
                     b.ToTable("Images", (string)null);
                 });
@@ -90,7 +97,7 @@ namespace Data.Migrations
                 {
                     b.HasOne("Entities.Entities.CategoryItem", "CategoryItem")
                         .WithMany("Images")
-                        .HasForeignKey("Category")
+                        .HasForeignKey("CategoryItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

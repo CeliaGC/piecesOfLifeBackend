@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text;
-
+using System.Text.Json.Serialization;
 
 namespace Entities.Entities
 {
@@ -24,10 +24,13 @@ namespace Entities.Entities
         public string ImageName { get; set; }
         public string ImageSource { get; set; }
         public string Category { get; set; }
+        public int CategoryItemId { get; set; }
         public Guid IdWeb { get; set; }
         public DateTime InsertDate { get; private set; }
         public bool IsActive { get; set; }
         public bool IsPublic { get; private set; }
+
+        //[JsonIgnore]
         public CategoryItem CategoryItem { get; set; } = null!;
 
     }

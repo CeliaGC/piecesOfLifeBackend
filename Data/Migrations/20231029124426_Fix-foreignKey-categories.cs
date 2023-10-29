@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class FixforeignKeycategories : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,15 +15,16 @@ namespace Data.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    CategoryName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IdCategory = table.Column<int>(type: "int", nullable: false),
+                    IdCategory = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.CategoryName);
+                    table.PrimaryKey("PK_Categories", x => x.IdCategory);
                 });
 
             migrationBuilder.CreateTable(
@@ -34,7 +35,8 @@ namespace Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ImageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageSource = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Category = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CategoryItemId = table.Column<int>(type: "int", nullable: false),
                     IdWeb = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
@@ -44,17 +46,17 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_Images", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Images_Categories_Category",
-                        column: x => x.Category,
+                        name: "FK_Images_Categories_CategoryItemId",
+                        column: x => x.CategoryItemId,
                         principalTable: "Categories",
-                        principalColumn: "CategoryName",
+                        principalColumn: "IdCategory",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Images_Category",
+                name: "IX_Images_CategoryItemId",
                 table: "Images",
-                column: "Category");
+                column: "CategoryItemId");
         }
 
         /// <inheritdoc />

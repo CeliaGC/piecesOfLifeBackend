@@ -20,10 +20,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IImageLogic, ImageLogic>();
 builder.Services.AddScoped<IImageService, ImageService>();
-
-
-
-
+builder.Services.AddScoped<ICategoryLogic, CategoryLogic>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 
 builder.Services.AddDbContext<ServiceContext>(
