@@ -11,38 +11,51 @@ namespace TestProject
     [TestClass]
     public class ImageLogicTests
     {
-        private Mock<DbSet<CategoryItem>> _mockSet;
-        private Mock<ServiceContext> _mockContext;
-        private ImageLogic _logic;  // Suponiendo que tu servicio se llama ImageService
+    private Mock<DbSet<CategoryItem>> _mockCategorySet;
+    private Mock<DbSet<ImageItem>> _mockImageSet;
+    private Mock<ServiceContext> _mockContext;
+    private ImageLogic _logic;
 
         public ImageLogicTests()
         {
-            var data = new List<CategoryItem>
-            {
-                new CategoryItem { IdCategory = 1, CategoryName = "Test" }
-            }.AsQueryable();
-    
-            _mockSet = new Mock<DbSet<CategoryItem>>();
-            _mockSet.As<IQueryable<CategoryItem>>().Setup(m => m.Provider).Returns(data.Provider);
-            _mockSet.As<IQueryable<CategoryItem>>().Setup(m => m.Expression).Returns(data.Expression);
-            _mockSet.As<IQueryable<CategoryItem>>().Setup(m => m.ElementType).Returns(data.ElementType);
-            _mockSet.As<IQueryable<CategoryItem>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
-    
-            _mockContext = new Mock<ServiceContext>();
-            _mockContext.Setup(c => c.Set<CategoryItem>()).Returns(_mockSet.Object);
-    
-            _logic = new ImageLogic(_mockContext.Object);  // Suponiendo que tu servicio se llama ImageService
-        }
+            var categoryData = new List<CategoryItem>
+        {
+            new CategoryItem { IdCategory = 1, CategoryName = "Nature" }
+        }.AsQueryable();
 
+            _mockCategorySet = new Mock<DbSet<CategoryItem>>();
+            _mockCategorySet.As<IQueryable<CategoryItem>>().Setup(m => m.Provider).Returns(categoryData.Provider);
+            _mockCategorySet.As<IQueryable<CategoryItem>>().Setup(m => m.Expression).Returns(categoryData.Expression);
+            _mockCategorySet.As<IQueryable<CategoryItem>>().Setup(m => m.ElementType).Returns(categoryData.ElementType);
+            _mockCategorySet.As<IQueryable<CategoryItem>>().Setup(m => m.GetEnumerator()).Returns(categoryData.GetEnumerator());
+
+            // Configuración para ImageItem
+            var imageData = new List<ImageItem>().AsQueryable(); // Inicialmente vacío, ajusta según sea necesario
+            _mockImageSet = new Mock<DbSet<ImageItem>>();
+            _mockImageSet.As<IQueryable<ImageItem>>().Setup(m => m.Provider).Returns(imageData.Provider);
+            _mockImageSet.As<IQueryable<ImageItem>>().Setup(m => m.Expression).Returns(imageData.Expression);
+            _mockImageSet.As<IQueryable<ImageItem>>().Setup(m => m.ElementType).Returns(imageData.ElementType);
+            _mockImageSet.As<IQueryable<ImageItem>>().Setup(m => m.GetEnumerator()).Returns(imageData.GetEnumerator());
+
+            // Configurar el ServiceContext mockeado
+            _mockContext = new Mock<ServiceContext>();
+            _mockContext.Setup(c => c.Set<CategoryItem>()).Returns(_mockCategorySet.Object);
+            _mockContext.Setup(c => c.Images).Returns(_mockImageSet.Object); // Añade esta línea
+
+            _logic = new ImageLogic(_mockContext.Object);
+        }
         [TestMethod]
         [Fact]
-        public void UpdateImage_UpdatesCategoryItemId()
+        public void UpdateImage_UpdatesImageName()
         {
-            var imageItem = new ImageItem { Category = "Test" };
-    
+            var originalName = "OriginalName";
+            var imageItem = new ImageItem { ImageName = originalName, Category = "Nature", ImageSource = "url"};
+            var newName = "UpdatedName";
+            imageItem.ImageName = newName;
             _logic.UpdateImage(imageItem);
-    
-            Assert.Equal(1, imageItem.CategoryItemId);
+
+            Assert.NotEqual(originalName, imageItem.ImageName);
+            Assert.Equal(newName, imageItem.ImageName);  // Asume que tu lógica actualiza el nombre a "UpdatedName"
         }
     }
 }

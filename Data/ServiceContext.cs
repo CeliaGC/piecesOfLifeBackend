@@ -13,8 +13,9 @@ namespace Data
 {
     public class ServiceContext : DbContext
     {
+        public ServiceContext() { }
         public ServiceContext(DbContextOptions<ServiceContext> options) : base(options) { }
-        public DbSet<ImageItem> Images { get; set; }
+        public virtual DbSet<ImageItem> Images { get; set; }
         public DbSet<CategoryItem> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
