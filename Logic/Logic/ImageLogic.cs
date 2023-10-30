@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Logic.Logic
 {
@@ -18,10 +19,17 @@ namespace Logic.Logic
 
         public ImageLogic(ServiceContext serviceContext) : base(serviceContext) { }
 
-        void IImageLogic.DeleteImage(int id)
+        public void DeleteImage(int id)
         {
-            _serviceContext.Images.Remove(_serviceContext.Set<ImageItem>().Where(i => i.Id == id).FirstOrDefault());
-            _serviceContext.SaveChanges();
+            //_serviceContext.Images.Remove(_serviceContext.Set<ImageItem>().Where(i => i.Id == id).FirstOrDefault());
+            //_serviceContext.SaveChanges();
+
+            var imageToDelete = _serviceContext.Images.Find(id);
+            if (imageToDelete != null)
+            {
+                _serviceContext.Images.Remove(imageToDelete);
+                _serviceContext.SaveChanges();
+            }
         }
 
         public List<ImageItem> GetAll()
@@ -67,9 +75,10 @@ namespace Logic.Logic
         int IImageLogic.InsertImagetItem(ImageItem imageItem)
         {
 
-            var categoryInDataBase = _serviceContext.Set<CategoryItem>().Where(c => c.CategoryName == imageItem.Category).FirstOrDefault();
-            //var imageToAdd = new ImageItem();
-            imageItem.CategoryItemId = categoryInDataBase.IdCategory;
+
+
+
+
             _serviceContext.Images.Add(imageItem);
             _serviceContext.SaveChanges();
             return imageItem.Id;
@@ -79,9 +88,7 @@ namespace Logic.Logic
 
         {
 
-            var categoryInDataBase = _serviceContext.Set<CategoryItem>().Where(c => c.CategoryName == imageItem.Category).FirstOrDefault();
-            //var imageToAdd = new ImageItem();
-            imageItem.CategoryItemId = categoryInDataBase.IdCategory;
+
             _serviceContext.Images.Update(imageItem);
             _serviceContext.SaveChanges();
         }
