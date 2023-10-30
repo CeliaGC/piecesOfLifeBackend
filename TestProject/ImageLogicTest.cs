@@ -32,7 +32,7 @@ namespace TestProject
             _mockCategorySet.As<IQueryable<CategoryItem>>().Setup(m => m.GetEnumerator()).Returns(categoryData.GetEnumerator());
 
             // Configuración para ImageItem
-            var imageData = new List<ImageItem>().AsQueryable(); // Inicialmente vacío, ajusta según sea necesario
+            var imageData = new List<ImageItem>().AsQueryable(); 
             _mockImageSet = new Mock<DbSet<ImageItem>>();
             _mockImageSet.As<IQueryable<ImageItem>>().Setup(m => m.Provider).Returns(imageData.Provider);
             _mockImageSet.As<IQueryable<ImageItem>>().Setup(m => m.Expression).Returns(imageData.Expression);
@@ -43,7 +43,7 @@ namespace TestProject
             // Configurar el ServiceContext mockeado
             _mockContext = new Mock<ServiceContext>();
             _mockContext.Setup(c => c.Set<CategoryItem>()).Returns(_mockCategorySet.Object);
-            _mockContext.Setup(c => c.Images).Returns(_mockImageSet.Object); // Añade esta línea
+            _mockContext.Setup(c => c.Images).Returns(_mockImageSet.Object);
             _mockContext.Setup(c => c.Set<ImageItem>()).Returns(_mockImageSet.Object);
    
 
@@ -60,38 +60,25 @@ namespace TestProject
             _logic.UpdateImage(imageItem);
 
             Assert.NotEqual(originalName, imageItem.ImageName);
-            Assert.Equal(newName, imageItem.ImageName);  // Asume que tu lógica actualiza el nombre a "UpdatedName"
+            Assert.Equal(newName, imageItem.ImageName);  
         }
 
         [TestMethod]
         [Fact]
         public void DeleteImage_RemovesImage()
         {
-            // Crear un ImageItem mockeado
-            var imageIdToDelete = 123; // ID arbitrario para la prueba
+           
+            var imageIdToDelete = 123;
             var mockImageItem = new ImageItem { Id = imageIdToDelete, ImageName = "TestImage", Category = "Nature", ImageSource = "url" };
-
-            // Configura el DbSet mockeado para devolver el mockImageItem cuando se llame a Find
-            //_mockImageSet.Setup(m => m.Where(It.IsAny<Expression<Func<ImageItem, bool>>>()))
-            //             .Returns((Expression<Func<ImageItem, bool>> predicate) =>
-            //             new List<ImageItem> { mockImageItem }.AsQueryable().Where(predicate));
-
-            //        _mockImageSet.Setup(m => m.Where(It.IsAny<Expression<Func<ImageItem, bool>>>()))
-            //.Returns((Expression<Func<ImageItem, bool>> predicate) =>
-            //    new List<ImageItem> { mockImageItem }.AsQueryable().Where(predicate));
 
             _mockImageSet.Setup(m => m.Find(It.IsAny<object[]>())).Returns(mockImageItem);
 
-
-
-            // Llamar al método DeleteImage en ImageLogic
             _logic.DeleteImage(imageIdToDelete);
 
-            // Verificar que se llamó al método Remove con el mockImageItem
             _mockImageSet.Verify(m => m.Remove(mockImageItem), Times.Once());
-
-            // Verificar que se llamó al método SaveChanges en _serviceContext
             _mockContext.Verify(m => m.SaveChanges(), Times.Once());
+
+         
         }
 
     }
