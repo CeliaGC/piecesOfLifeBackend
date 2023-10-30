@@ -77,7 +77,6 @@ namespace Logic.Logic
 
 
             var categoryInDataBase = _serviceContext.Set<CategoryItem>().Where(c => c.CategoryName == imageItem.Category).FirstOrDefault();
-            //var imageToAdd = new ImageItem();
             imageItem.CategoryItemId = categoryInDataBase.IdCategory;
             _serviceContext.Images.Add(imageItem);
             _serviceContext.SaveChanges();
