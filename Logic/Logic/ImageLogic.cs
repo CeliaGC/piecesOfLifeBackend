@@ -67,9 +67,9 @@ namespace Logic.Logic
         int IImageLogic.InsertImagetItem(ImageItem imageItem)
         {
 
-            var categoryInDataBase = _serviceContext.Set<CategoryItem>().Where(c => c.CategoryName == imageItem.Category);
+            var categoryInDataBase = _serviceContext.Set<CategoryItem>().Where(c => c.CategoryName == imageItem.Category).FirstOrDefault();
             //var imageToAdd = new ImageItem();
-            //imageItem.CategoryItemId = categoryInDataBase.
+            imageItem.CategoryItemId = categoryInDataBase.IdCategory;
             _serviceContext.Images.Add(imageItem);
             _serviceContext.SaveChanges();
             return imageItem.Id;
@@ -79,7 +79,9 @@ namespace Logic.Logic
 
         {
 
-
+            var categoryInDataBase = _serviceContext.Set<CategoryItem>().Where(c => c.CategoryName == imageItem.Category).FirstOrDefault();
+            //var imageToAdd = new ImageItem();
+            imageItem.CategoryItemId = categoryInDataBase.IdCategory;
             _serviceContext.Images.Update(imageItem);
             _serviceContext.SaveChanges();
         }
