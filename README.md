@@ -2,13 +2,23 @@
 
 <h2>Project</h2>
 
-This is a proposal for a simple application to manage images on-line. The platform allows to save images by URL link, group them into categories and modify their registration data.
-
+This is a simple-to-use web application proposal for managing image collections. The platform allows you to store images in the cloud, eliminating the need to store them locally, which can be a data flow burden. Subsequently, image collections are stored in a relational database that the user manages within a gallery via URLs.
 <h2>Design</h2>
 
-The design is thought for an intuitive user experience, with a suggestive landing page that briefly explains the context of the app and links to the image storage form.
-The "Gallery" view, allows to obtain a complete gallery of images or a collection filtered by categories.
-From each image we can access an enlarged view and the log editor and also delete the image.
+The design is conceived for a smooth and intuitive user experience, with an enticing landing page that briefly explains the application's context and directly links to the image submission form view. In this form, we can add an image, give it a title, and place it within a collection. The image is uploaded using a Cloudinary widget that offers multiple options:
+
+- URL
+  
+- Drag and drop
+  
+- Capture images via webcam
+ 
+- Access to Drive, Dropbox
+ 
+- And more
+
+The dropdown menu for collections allows for the addition of new categories.
+Each image has its own button menu so an user can have a larger view, acces to an edit form and and the posibility of deleting the image.
 
 <h3>Desktop Views</h3>
  
@@ -63,9 +73,9 @@ AspNET.Core Entity Framework 6
 
 -Clone projects
 
-https://github.com/MyFaveImagesProject/MyFaveImgFront.git
+https://github.com/CeliaGC/piecesOfLifeFrontend.git
 
-https://github.com/MyFaveImagesProject/MyFaveImgBack.git
+https://github.com/CeliaGC/piecesOfLifeBackend.git
 
 <h3>Back-end</h3>
 
@@ -111,6 +121,8 @@ That should install all the necessary dependencies, but if you have any problems
 - npm install --save-dev jsdom 
 - npm install --save-dev @testing-library/jest-dom
 - npm install --save-dev @testing-library/react
+- npm install cloudinary
+- npm install sweetAlert2
 
 
 <h2>Developer</h2>
