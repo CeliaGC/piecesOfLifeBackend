@@ -86,7 +86,8 @@ namespace Logic.Logic
         public void UpdateImage(ImageItem imageItem)
 
         {
-
+            var categoryInDataBase = _serviceContext.Set<CategoryItem>().Where(c => c.CategoryName == imageItem.Category).FirstOrDefault();
+            imageItem.CategoryItemId = categoryInDataBase.IdCategory;
 
             _serviceContext.Images.Update(imageItem);
             _serviceContext.SaveChanges();
